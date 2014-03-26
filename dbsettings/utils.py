@@ -6,7 +6,10 @@ def set_defaults(app, *defaults):
 
     if not defaults:
         raise ImproperlyConfigured("No defaults were supplied to set_defaults.")
-    app_label = app.__name__.split('.')[-2]
+    try:
+        app_label = app.__name__.split('.')[-2]
+    except IndexError:
+        app_label = app.__name__
 
     def install_settings(app, created_models, verbosity=2, **kwargs):
         printed = False
