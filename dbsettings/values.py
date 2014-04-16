@@ -3,7 +3,6 @@ from decimal import Decimal
 from hashlib import md5
 from os.path import join as pjoin
 import time
-from PIL import Image
 
 from django import forms
 from django.conf import settings
@@ -254,6 +253,8 @@ class ImageValue(Value):
     class field(forms.ImageField):
         class widget(forms.FileInput):
             "Widget with preview"
+            
+            from PIL import Image
 
             def render(self, name, value, attrs=None):
                 output = []
