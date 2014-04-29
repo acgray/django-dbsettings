@@ -256,7 +256,6 @@ class ImageValue(Value):
             
             def render(self, name, value, attrs=None):
                 from PIL import Image
-
                 output = []
 
                 try:
