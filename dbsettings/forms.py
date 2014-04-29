@@ -27,7 +27,11 @@ class SettingsEditor(forms.BaseForm):
         field.label = capfirst(field.label)
         module_name, class_name, _ = RE_FIELD_NAME.match(field.name).groups()
 
-        app_label = module_name.split('.')[-2]
+        try:
+            app_label = module_name.split('.')[-2]
+        except IndexError:
+            app_label = module_name.split('.')[-1]
+
         field.module_name = app_label
 
         if class_name:
@@ -45,8 +49,12 @@ def customized_editor(user, settings):
     base_fields = SortedDict()
     verbose_names = {}
     for setting in settings:
+        try:
+            app_label = setting.module_name.split('.')[-2]
+        except IndexError:
+            app_label = setting.module_name.split('.')[-1]
         perm = '%s.can_edit_%s_settings' % (
-            setting.module_name.split('.')[-2],
+            app_label,
             setting.class_name.lower()
         )
         if user.has_perm(perm):
